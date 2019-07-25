@@ -40,7 +40,7 @@
             <v-text-field
               v-model.number="fuel.end_odd"
               label="Конечные показатели одометра"
-              :rules="[() => fuel.start_odd<fuel.end_odd || 'Проверьте правильность заполнения поля']"
+              :rules="[() => fuel.start_odd < fuel.end_odd || 'Проверьте правильность заполнения поля']"
               required
               prepend-icon="mdi-speedometer"
             ></v-text-field>
@@ -48,10 +48,22 @@
         </v-layout>
         <v-layout row wrap>
           <v-flex xs12 sm12 md6 lg6 xl6>
-            <v-text-field v-model="fuel.fuel" label="Топлива при выезде" prepend-icon="mdi-fuel"></v-text-field>
+            <v-text-field
+              v-model="fuel.fuel"
+              label="Топлива при выезде"
+              :rules="[() => fuel.fuel > 0 || 'Проверьте правильность заполнения поля']"
+              required
+              prepend-icon="mdi-fuel"
+            ></v-text-field>
           </v-flex>
           <v-flex xs12 sm12 md6 lg6 xl6 pl-2>
-            <v-text-field v-model="fuel.fueling" label="Заправлено" prepend-icon="mdi-gauge"></v-text-field>
+            <v-text-field
+              v-model="fuel.fueling"
+              label="Заправлено"
+              :rules="[() => fuel.fueling >= 0 || 'Проверьте правильность заполнения поля']"
+              required
+              prepend-icon="mdi-gauge"
+            ></v-text-field>
           </v-flex>
         </v-layout>
         <v-layout row wrap>
@@ -82,6 +94,12 @@
         </v-btn>
       </v-card-actions>
     </v-card>
+    <v-snackbar v-model="snackbar" right bottom :color="colorValue">
+      {{ message }}
+      <v-btn text @click="snackbar = false">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
+    </v-snackbar>
   </v-container>
 </template>
 <script>
@@ -96,7 +114,10 @@ export default {
         fueling: "0",
         waiting: "0",
         check: false
-      }
+      },
+      snackbar: false,
+      message: "",
+      colorValue: "info"
     };
   },
   computed: {
@@ -121,7 +142,8 @@ export default {
           fuel: this.fuel
         })
         .then(response => {
-          alert("Успешно сохранено");
+          this.notification("Успешно сохранено", "info");
+          this.fuel.date = null;
           this.fuel.end_odd = "0";
           this.fuel.fueling = "0";
           this.fuel.waiting = "0";
@@ -129,7 +151,7 @@ export default {
           this.getLast();
         })
         .catch(() => {
-          alert("SAVE ERROR!");
+          this.notification("Ошибка сохранения", "error");
         });
     },
     getLast() {
@@ -142,6 +164,11 @@ export default {
         .catch(() => {
           this.getLast();
         });
+    },
+    notification(text, colorValue) {
+      this.message = text;
+      this.colorValue = colorValue;
+      this.snackbar = true;
     }
   },
   mounted() {

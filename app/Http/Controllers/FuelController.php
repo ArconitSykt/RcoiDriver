@@ -6,19 +6,25 @@ use Illuminate\Http\Request;
 
 class FuelController extends Controller
 {
+    public function all() {
+        return Fuel::getAll();
+    }
+
     public function last() {
         return Fuel::last();
     }
 
-    public function create(Request $request) {
-        return Fuel::create($request);
+    public function createFuel(Request $request) {
+        return Fuel::createFuel($request);
     }
 
+    public function updateFuel(Request $request)
+    {
+        return Fuel::updateFuel($request->fuel);
+    }
+    
     public function fuel($date)
     {
-        // var_dump($request);
-        // return 0;
-        
         return view('fuel', [
             'data' => Fuel::Excel($date),
             'date' => $date,

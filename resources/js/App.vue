@@ -10,7 +10,7 @@
         @click="navigateTo({name: 'AddForm'})"
       ></v-img>
       <v-spacer></v-spacer>
-      <v-btn text @click="navigateTo({name: 'Excel'})">Формирование Excel документа</v-btn>
+      <v-btn text @click="navigateTo({name: 'EditFuel'})">Список путевых листов</v-btn>
     </v-app-bar>
     <v-content>
       <v-container fluid>

@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css" rel="stylesheet">
     <script src="{{ asset('js/main.js') }}" defer></script>
     <link href="{{ asset('/css/app.css') }}"  rel="stylesheet">
-    <title>Водила</title>
+    <title>Заполнение путевых листов</title>
 </head>
 <body>
     <div id="app">

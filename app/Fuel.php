@@ -13,7 +13,13 @@ class Fuel extends Model
         ->first());
     }
 
-    public static function create($req) {
+    public static function getAll() {
+        return DB::table('fuels')
+        ->orderBy('id', 'desc')
+        ->get();
+    }
+
+    public static function createFuel($req) {
         try {
             DB::table('fuels')->insert(
                 [
@@ -32,6 +38,24 @@ class Fuel extends Model
         }
     }
 
+    public static function updateFuel($req) {
+        try {
+            return DB::table('fuels')
+                ->where('id', $req['id'])
+                ->update([
+                    'date' => $req['date']??null,
+                    'start_odd' => $req['start_odd']??0,
+                    'end_odd' => $req['end_odd']??0,
+                    'fuel' => $req['fuel']??0,
+                    'fueling' => $req['fueling']??0,
+                    'waiting' => $req['waiting']??0,
+                    'check' => $req['check']??0,
+                ]);
+        } catch (\Throwable $th) {
+            return "error: ".$th;
+        }
+        
+    }
     public static function Excel($req) {
         $month = substr($req, 5, 2);
         $year = substr($req, 0, 4);
