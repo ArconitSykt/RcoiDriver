@@ -63,6 +63,7 @@ class Fuel extends Model
         return DB::table('fuels')
         ->whereMonth('date', $month)
         ->whereYear('date', $year)
+        ->orderBy('date')
         ->get();
    }
 

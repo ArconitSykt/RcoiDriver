@@ -61,7 +61,7 @@ export default {
           value: "start_odd"
         },
         {
-          text: "Начальный пробег",
+          text: "Конечный пробег",
           value: "end_odd"
         },
         {
