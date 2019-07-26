@@ -5,13 +5,12 @@
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
-        append-icon="mdi-table-search"
+        prepend-icon="mdi-table-search"
         label="Поиск"
         single-line
         hide-details
         clearable
       ></v-text-field>
-
       <v-btn text @click="navigateTo({name: 'Excel'})">Формирование Excel документа</v-btn>
     </v-card-title>
     <v-data-table
