@@ -1,6 +1,6 @@
 <template>
   <v-container grid-list-xs>
-    <v-card>
+    <v-card flat raised>
       <v-card-title>Добавление показателей нового путевого листа</v-card-title>
       <v-card-text>
         <v-layout row wrap>
@@ -84,6 +84,7 @@
         </v-layout>
       </v-card-text>
       <v-card-actions>
+        <v-spacer></v-spacer>
         <v-btn
           color="success"
           :disabled="!formValidator"
@@ -142,7 +143,7 @@ export default {
           fuel: this.fuel
         })
         .then(response => {
-          this.notification("Успешно сохранено", "info");
+          this.notification("Успешно сохранено", "success");
           this.fuel.date = null;
           this.fuel.end_odd = "0";
           this.fuel.fueling = "0";
@@ -162,6 +163,10 @@ export default {
           this.fuel.fuel = response.data.afterFuel;
         })
         .catch(() => {
+          this.notification(
+            "Попытка получить данные последнего путевого листа",
+            "warning"
+          );
           this.getLast();
         });
     },

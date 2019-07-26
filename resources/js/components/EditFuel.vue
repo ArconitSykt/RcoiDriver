@@ -11,9 +11,7 @@
         hide-details
         clearable
       ></v-text-field>
-      <v-btn text icon small @click="getItems">
-        <v-icon>mdi-reload</v-icon>
-      </v-btn>
+
       <v-btn text @click="navigateTo({name: 'Excel'})">Формирование Excel документа</v-btn>
     </v-card-title>
     <v-data-table
@@ -30,7 +28,17 @@
       <template v-slot:item.action="{ item }">
         <v-icon @click="editItem(item)">mdi-playlist-edit</v-icon>
       </template>
+
+      <template v-slot:footer>
+        <v-app-bar flat>
+          <v-spacer></v-spacer>
+          <v-btn text small @click="getItems">
+            <v-icon>mdi-reload</v-icon>
+          </v-btn>
+        </v-app-bar>
+      </template>
     </v-data-table>
+
     <Fuel :dialog="dialog" :fuel="editedItem"></Fuel>
     <v-snackbar v-model="snackbar" right bottom :color="colorValue">
       {{ message }}

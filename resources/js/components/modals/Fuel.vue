@@ -101,7 +101,7 @@ export default {
   },
   methods: {
     close() {
-      Event.$emit("closeDialog", 0);
+      Event.$emit("closeDialog", "info", "Изменения не сохранены");
     },
     save() {
       axios
