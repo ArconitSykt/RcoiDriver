@@ -47,11 +47,23 @@
           </v-flex>
         </v-layout>
         <v-layout row wrap>
-          <v-flex xs12 sm12 md6 lg6 xl6>
+          <v-flex xs12 sm12 md4 lg4 xl4>
+            <v-select
+              :items="fuel_index_list"
+              v-model="fuel_index"
+              item-text="index_name"
+              item-value="index_value"
+              label="Коэффициент прошлого ПЛ"
+              prepend-icon="mdi-fuel"
+            ></v-select>
+            <!-- Спрятал, чтобы работало Computed -->
+            <span v-show="false">{{calcFuel}}</span>
+          </v-flex>
+          <v-flex xs12 sm12 md2 lg2 xl2>
             <v-text-field
               v-model="fuel.fuel"
               label="Топлива при выезде"
-              :rules="[() => fuel.fuel > 0 || 'Проверьте правильность заполнения поля']"
+              :rules="[() => fuel.fuel === calcFuel || 'Проверьте правильность заполнения поля']"
               required
               prepend-icon="mdi-fuel"
             ></v-text-field>
@@ -116,9 +128,16 @@ export default {
         waiting: "0",
         check: false
       },
+      fuel_index: 10,
+      fuel_index_list: [
+        { index_name: "Лето, Зима командировка (10)", index_value: 10 },
+        { index_name: "Лето, командировка (9)", index_value: 9 },
+        { index_name: "Зима (11.2)", index_value: 11.2 }
+      ],
       snackbar: false,
       message: "",
-      colorValue: "info"
+      colorValue: "info",
+      last_data: {}
     };
   },
   computed: {
@@ -131,11 +150,22 @@ export default {
       } else {
         return true;
       }
+    },
+    calcFuel() {
+      let fuel =
+        this.last_data.fuel +
+        this.last_data.fueling -
+        (((this.last_data.end_odd - this.last_data.start_odd) / 100) *
+          this.fuel_index +
+          this.last_data.waiting * 0.82);
+      fuel = fuel.toFixed(3) / 1;
+      this.fuel.fuel = fuel;
+      return fuel;
     }
   },
   methods: {
     saveData() {
-      this.fuel.fuel = this.fuel.fuel.replace(/,/g, `.`);
+      // this.fuel.fuel = this.fuel.fuel.replace(/,/g, `.`);
       this.fuel.fueling = this.fuel.fueling.replace(/,/g, `.`);
       this.fuel.waiting = this.fuel.waiting.replace(/,/g, `.`);
       axios
@@ -160,7 +190,7 @@ export default {
         .get("fuel/last")
         .then(response => {
           this.fuel.start_odd = response.data.end_odd;
-          this.fuel.fuel = response.data.afterFuel;
+          this.last_data = response.data;
         })
         .catch(() => {
           this.notification(

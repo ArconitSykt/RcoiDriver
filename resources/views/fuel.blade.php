@@ -32,7 +32,7 @@ if($key != 0) {
   $sheet->setCellValueByColumnAndRow(7, 7+$key, $value->fueling);
   $sheet->setCellValueByColumnAndRow(8, 7+$key, $value->fuel);
   $sheet->setCellValueByColumnAndRow(9, 7+$key, "=H".(7+$key)."+G".(7+$key)."-F".(7+$key));
-  $sheet->setCellValueByColumnAndRow(10, 7+$key, "=0.82*".$value->waiting);
+  $sheet->setCellValueByColumnAndRow(10, 7+$key, "=0.82*K".(7+$key));
   $sheet->setCellValueByColumnAndRow(11, 7+$key, $value->waiting);
 }
 $sheet->setCellValueByColumnAndRow(4, 8+$all, "=SUM(D7:D".(7+$all).")");
